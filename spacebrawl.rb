@@ -42,7 +42,7 @@ class GameWindow < Gosu::Window
 end
 
 def get(path)
-  Marshal.load(open("http://localhost:4567/#{path}"))
+  Marshal.load(open("http://spacebrawl.heroku.com/#{path}"))
 end
 
 window = GameWindow.new
