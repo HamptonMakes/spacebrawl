@@ -2,7 +2,6 @@ require 'rubygems'
 require 'sinatra'
 require 'models/player'
 require 'json'
-require 'gosu'
 
 set :reload, false
 
