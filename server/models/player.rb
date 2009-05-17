@@ -15,7 +15,6 @@ class Player
 
   def initialize
     @x = @y = @vel_x = @vel_y = @angle = 0.0
-    @id = rand(1000000)
   end
   
   def warp(options = {})

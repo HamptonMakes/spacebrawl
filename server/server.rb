@@ -8,7 +8,7 @@ set :reload, false
 $players = {}
 
 get("/players/new") do
-  player = Player.create
+  player = Player.new.save
   Marshal.dump(player)
 end
 
