@@ -1,5 +1,14 @@
+require 'dm-core'
+
 class Player
-  attr :id
+  include DataMapper::Resource
+  
+  property :id, Integer, :serial => true 
+  property :x, Float
+  property :y, Float
+  property :angle, Float
+  property :vel_y, Float
+  property :vel_x, Float
 
   def initialize
     @x = @y = @vel_x = @vel_y = @angle = 0.0
@@ -32,5 +41,8 @@ class Player
 
     @vel_x *= 0.99
     @vel_y *= 0.99
+    self.save
   end
 end
+
+DataMapper.auto_upgrade!

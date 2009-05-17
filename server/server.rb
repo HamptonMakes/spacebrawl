@@ -8,19 +8,18 @@ set :reload, false
 $players = {}
 
 get("/players/new") do
-  player = Player.new
-  $players[player.id] = player
+  player = Player.create
   Marshal.dump(player)
 end
 
 get("/players/:id/action") do
-  @player = $players[params["id"].to_i]
+  @player = Player.get params["id"]
   @player.send(params['do'], params)
   Marshal.dump("OK")
 end
 
 get("/universe") do
-  $players.values.each do |p|
+  Player.all.values.each do |p|
     p.move
   end
   
