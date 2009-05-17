@@ -1,5 +1,8 @@
 require 'dm-core'
 
+DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite3://my.db')
+
+
 class Player
   include DataMapper::Resource
   
