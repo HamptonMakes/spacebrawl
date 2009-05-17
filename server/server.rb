@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'sinatra'
-require 'models/player'
+require 'server/models/player'
 require 'json'
 
 set :reload, false
@@ -15,7 +15,7 @@ end
 
 get("/players/:id/action") do
   @player = $players[params["id"].to_i]
-  @player.send(params['do'])
+  @player.send(params['do'], params)
   Marshal.dump("OK")
 end
 

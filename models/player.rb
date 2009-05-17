@@ -19,15 +19,15 @@ class Player
   end
   
   def method_missing(method, *args)
-    options = args.last
     params = {:do => method}
-    if options.is_a? Hash
-      params.merge!(options)
+    if args.last.is_a? Hash
+      params.merge!(args.last)
     end
-    uri_params = []
+
     uri_params = (params.collect do |key, value|
       "#{key}=#{value}"
     end).join("&")
-    get("players/#{id}/action?do=#{method}")
+    
+    get("players/#{id}/action?#{uri_params}")
   end
 end

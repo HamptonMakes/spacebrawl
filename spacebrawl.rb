@@ -26,6 +26,9 @@ class GameWindow < Gosu::Window
     end
     
     get("universe").each do |player|
+      if player.id == @player.id
+        @player = player
+      end
       player.draw @image
     end
   end
@@ -42,7 +45,7 @@ class GameWindow < Gosu::Window
 end
 
 def get(path)
-  Marshal.load(open("http://spacebrawl.heroku.com/#{path}"))
+  Marshal.load(open("http://localhost:3000/#{path}"))
 end
 
 window = GameWindow.new
