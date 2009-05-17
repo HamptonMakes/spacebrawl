@@ -6,21 +6,22 @@ class Player
     @id = rand(1000000)
   end
   
-  def warp(x, y)
+  def warp(options)
     @x, @y = x, y
   end
 
-  def turn_left
+  def turn_left(options)
     @angle -= 4.5
   end
 
-  def turn_right
+  def turn_right(options)
     @angle += 4.5
   end
-
-  def accelerate
-    @vel_x += Gosu::offset_x(@angle, 0.5)
-    @vel_y += Gosu::offset_y(@angle, 0.5)
+  
+  # EASILY EXPLOITABLE!
+  def velocity(variables)
+    @vel_x = variables["vel_x"]
+    @vel_y = variables["vel_y"]
   end
 
   def move
