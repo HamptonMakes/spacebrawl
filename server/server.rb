@@ -1,27 +1,27 @@
-require 'rubygems'
+require 'server/init'
 require 'sinatra'
-require 'server/models/player'
-require 'json'
 
 set :reload, false
 
-$players = {}
+def serialize(data)
+  JSON.dump(data)
+end
+
+def report_status(text)
+  serialize({:status => text})
+end
 
 get("/players/new") do
-  player = Player.new.save
-  Marshal.dump(player)
+  player = Player.create(:name => "Crazyhorse")
+  serialize player.to_hash
 end
 
 get("/players/:id/action") do
-  @player = Player.get params["id"]
-  @player.send(params['do'], params)
-  Marshal.dump("OK")
+  player = Player.get params["id"]
+  $cache["player_#{player.id}"] = params['do']
+  report_status "OK"
 end
 
 get("/universe") do
-  Player.all.values.each do |p|
-    p.move
-  end
-  
-  Marshal.dump $players.values
+  $cache.fetch("universe", JSON.dump([]))
 end
