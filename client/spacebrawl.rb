@@ -35,12 +35,16 @@ class GameWindow < Gosu::Window
       @player.fire_missile
     end
     
+    
+    data = get("universe")
 
-    objects = get("universe").collect { |data| GameObject.new(data) }
+    objects = data["objects"].collect { |data| GameObject.new(data) }
     
     my_ship = (objects.select do |object|
       object.player_id.to_i == @player.id.to_i
     end).first
+    
+    my_ship.draw_health
     
     # only if my ship has shown up
     if my_ship

@@ -3,16 +3,21 @@ class Ship < GameObject
   attr :health
   attr :last_fired
   
+  def initialize(parent = nil)
+    super(parent)
+    @health = 100
+  end
+  
   def self.shape_array
     [CP::Vec2.new(-25.0, -25.0), CP::Vec2.new(-25.0, 25.0), CP::Vec2.new(25.0, 1.0), CP::Vec2.new(25.0, -1.0)]
   end
   
   def self.mass
-    100.0
+    500.0
   end
   
   def self.inertia
-    150.0
+    500.0
   end
   
   def perform_actions
@@ -41,6 +46,11 @@ class Ship < GameObject
     @shape.body.t += 300.0
   end
   
+  def hit!
+    @health -= 5
+    puts "HEALTH #{@health}"
+  end
+  
   # Apply forward force; Chipmunk will do the rest
   # SUBSTEPS is used as a divisor to keep acceleration rate constant
   # even if the number of steps per update are adjusted
@@ -48,11 +58,11 @@ class Ship < GameObject
   # forward momentum by creating a vector in the direction of the facing
   # and with a magnitude representing the force we want to apply
   def accelerate
-    @shape.body.apply_force((@shape.body.a.radians_to_vec2 * (3000.0)), CP::Vec2.new(0.0, 0.0))
+    @shape.body.apply_force((@shape.body.a.radians_to_vec2 * (5000.0)), CP::Vec2.new(0.0, 0.0))
   end
   
   def fire_missile
-    if @last_fired.nil? || (@last_fired < ((Time.now) - 1))
+    if @last_fired.nil? || (@last_fired < ((Time.now) - 0.5))
       @last_fired = Time.now
       puts "FIRING!"
       Missile.new(self)

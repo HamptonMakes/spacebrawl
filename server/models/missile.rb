@@ -1,10 +1,12 @@
 class Missile < GameObject
+  attr :exploded, true
   
   def initialize(ship = nil)
     super(ship.parent_id)
+    @exploded = false
     @shape.body.a = ship.shape.body.a
-    x = ship.shape.body.p.x + Gosu::offset_x(@shape.body.a.radians_to_gosu, 100)
-    y = ship.shape.body.p.y + Gosu::offset_y(@shape.body.a.radians_to_gosu, 100)
+    x = ship.shape.body.p.x + Gosu::offset_x(@shape.body.a.radians_to_gosu, 40)
+    y = ship.shape.body.p.y + Gosu::offset_y(@shape.body.a.radians_to_gosu, 40)
     @shape.body.p = CP::Vec2.new(x, y)
     
     @kill_at = Time.now + 1
@@ -25,7 +27,7 @@ class Missile < GameObject
   end
   
   def self.mass
-    5.0
+    1.0
   end
   
   def self.inertia

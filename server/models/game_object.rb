@@ -38,11 +38,15 @@ class GameObject
     self.class.to_s.downcase.to_sym
   end
   
+  def image
+    type
+  end
+  
   def key
     "#{type}_#{id}"
   end
   
   def to_hash
-    {:x => @shape.body.p.x, :y => @shape.body.p.y, :angle => @shape.body.a.radians_to_gosu, :type => type, :id => @id, :parent_id => @parent_id}
+    {:health => @health, :x => @shape.body.p.x, :y => @shape.body.p.y, :angle => @shape.body.a.radians_to_gosu, :image => image, :id => @id, :parent_id => @parent_id}
   end
 end

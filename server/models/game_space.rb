@@ -26,11 +26,14 @@ class GameSpace
     @space = CP::Space.new
     @space.damping = 0.8
     
-    #@space.add_collision_func(:ship, :star) do |ship_shape, star_shape|
-    #  @score += 10
-    #  @beep.play
-    #  @remove_shapes << star_shape
-    #end
+    @space.add_collision_func(:ship, :missile) do |ship_shape, missile_shape|
+      missile = object_with_shape(missile_shape)
+      if !missile.exploded
+        ship = object_with_shape(ship_shape)
+        ship.hit!
+        missile.exploded = true
+      end
+    end
     
     # Cache that will get filled below
     @objects = []
@@ -57,10 +60,15 @@ class GameSpace
     @space.remove_shape(game_object.shape)
   end
   
+  def object_with_shape(shape)
+    @objects.detect do |object|
+      object.shape == shape
+    end
+  end
+  
   def update
     load_new_ships
-    @remove_objects = []
-    
+
     @space.step(@dt)
   
     @objects.each do |object|
@@ -88,6 +96,6 @@ class GameSpace
   end
   
   def to_a
-    @objects.collect { |o| o.to_hash }
+    {:objects => (@objects.collect { |o| o.to_hash })}
   end
 end
