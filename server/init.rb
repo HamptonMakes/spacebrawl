@@ -4,8 +4,6 @@ require 'models/game_object'
 require 'models/ship'
 require 'models/missile'
 require 'json'
-require 'moneta/lib/moneta'
-require 'moneta/lib/moneta/memcache'
 
 module Math
   def self.offset_x(angle, distance)
