@@ -6,7 +6,7 @@ class GameObject
   def initialize(data)
     @x = data["x"]
     @y = data["y"]
-    @angle = data["angle"]
+    @angle = data["angle"].radians_to_gosu
     @player_id = data["parent_id"] || data["player_id"]
     @id = data["id"]
     @image = data["image"]
