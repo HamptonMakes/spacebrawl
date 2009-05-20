@@ -1,6 +1,6 @@
-require 'server/init'
-require 'server/Chipmunk-4.1.0/ruby/chipmunk'
-require 'server/models/game_space'
+require 'init'
+require 'Chipmunk-4.1.0/ruby/chipmunk'
+require 'models/game_space'
 gs = GameSpace.new
 
 while(true)

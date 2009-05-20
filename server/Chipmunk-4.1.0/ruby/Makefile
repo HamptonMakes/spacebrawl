@@ -4,58 +4,65 @@ SHELL = /bin/sh
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin9.0
+topdir = /usr/lib/ruby/1.8/x86_64-linux
 hdrdir = $(topdir)
 VPATH = $(srcdir):$(topdir):$(hdrdir)
-prefix = $(DESTDIR)/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr
 exec_prefix = $(prefix)
-sitedir = $(DESTDIR)/Library/Ruby/Site
+prefix = $(DESTDIR)/usr
+sharedstatedir = $(prefix)/com
+mandir = $(prefix)/share/man
+psdir = $(docdir)
+oldincludedir = $(DESTDIR)/usr/include
+localedir = $(datarootdir)/locale
+bindir = $(exec_prefix)/bin
+libexecdir = $(prefix)/lib/ruby1.8
+sitedir = $(DESTDIR)/usr/local/lib/site_ruby
+htmldir = $(docdir)
+vendorarchdir = $(vendorlibdir)/$(sitearch)
+includedir = $(prefix)/include
+infodir = $(prefix)/share/info
+vendorlibdir = $(vendordir)/$(ruby_version)
+sysconfdir = $(DESTDIR)/etc
+libdir = $(exec_prefix)/lib
+sbindir = $(exec_prefix)/sbin
 rubylibdir = $(libdir)/ruby/$(ruby_version)
 docdir = $(datarootdir)/doc/$(PACKAGE)
 dvidir = $(docdir)
+vendordir = $(libdir)/ruby/vendor_ruby
 datarootdir = $(prefix)/share
-archdir = $(rubylibdir)/$(arch)
-sbindir = $(exec_prefix)/sbin
-psdir = $(docdir)
-localedir = $(datarootdir)/locale
-htmldir = $(docdir)
-datadir = $(datarootdir)
-includedir = $(prefix)/include
-infodir = $(DESTDIR)/usr/share/info
-sysconfdir = $(prefix)/etc
-mandir = $(DESTDIR)/usr/share/man
-libdir = $(exec_prefix)/lib
-sharedstatedir = $(prefix)/com
-oldincludedir = $(DESTDIR)/usr/include
 pdfdir = $(docdir)
+archdir = $(rubylibdir)/$(arch)
 sitearchdir = $(sitelibdir)/$(sitearch)
-bindir = $(exec_prefix)/bin
-localstatedir = $(prefix)/var
+datadir = $(datarootdir)
+localstatedir = $(DESTDIR)/var
 sitelibdir = $(sitedir)/$(ruby_version)
-libexecdir = $(exec_prefix)/libexec
 
-CC = gcc
+CC = cc
 LIBRUBY = $(LIBRUBY_SO)
 LIBRUBY_A = lib$(RUBY_SO_NAME)-static.a
 LIBRUBYARG_SHARED = -l$(RUBY_SO_NAME)
-LIBRUBYARG_STATIC = -l$(RUBY_SO_NAME)
+LIBRUBYARG_STATIC = -l$(RUBY_SO_NAME)-static
 
 RUBY_EXTCONF_H = 
-CFLAGS   =  -fno-common -arch ppc -arch i386 -Os -pipe -fno-common -std=gnu99 -ffast-math 
+CFLAGS   =  -fPIC -fno-strict-aliasing -g -g -O2  -fPIC $(cflags) -std=gnu99 -ffast-math 
 INCFLAGS = -I. -I$(topdir) -I$(hdrdir) -I$(srcdir)
-CPPFLAGS =  
+DEFS     = 
+CPPFLAGS =   $(DEFS) $(cppflags)
 CXXFLAGS = $(CFLAGS) 
-DLDFLAGS = -L. -arch ppc -arch i386  
-LDSHARED = cc -arch ppc -arch i386 -pipe -bundle -undefined dynamic_lookup
+ldflags  = -L. -Wl,-Bsymbolic-functions -rdynamic -Wl,-export-dynamic
+dldflags = 
+archflag = 
+DLDFLAGS = $(ldflags) $(dldflags) $(archflag)
+LDSHARED = $(CC) -shared
 AR = ar
 EXEEXT = 
 
-RUBY_INSTALL_NAME = ruby
-RUBY_SO_NAME = ruby
-arch = universal-darwin9.0
-sitearch = universal-darwin9.0
+RUBY_INSTALL_NAME = ruby1.8
+RUBY_SO_NAME = ruby1.8
+arch = x86_64-linux
+sitearch = x86_64-linux
 ruby_version = 1.8
-ruby = /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
+ruby = /usr/bin/ruby1.8
 RUBY = $(ruby)
 RM = rm -f
 MAKEDIRS = mkdir -p
@@ -69,7 +76,7 @@ COPY = cp
 preload = 
 
 libpath = . $(libdir)
-LIBPATH =  -L"." -L"$(libdir)"
+LIBPATH =  -L. -L$(libdir)
 DEFFILE = 
 
 CLEANFILES = mkmf.log
@@ -79,20 +86,21 @@ extout =
 extout_prefix = 
 target_prefix = 
 LOCAL_LIBS = 
-LIBS = $(LIBRUBYARG_SHARED)  -lpthread -ldl -lm  
-SRCS = chipmunk.c cpArbiter.c cpArray.c cpBB.c cpBody.c cpCollision.c cpHashSet.c cpJoint.c cpPolyShape.c cpShape.c cpSpace.c cpSpaceHash.c cpVect.c rb_chipmunk.c rb_cpBB.c rb_cpBody.c rb_cpJoint.c rb_cpShape.c rb_cpSpace.c rb_cpVect.c
-OBJS = chipmunk.o cpArbiter.o cpArray.o cpBB.o cpBody.o cpCollision.o cpHashSet.o cpJoint.o cpPolyShape.o cpShape.o cpSpace.o cpSpaceHash.o cpVect.o rb_chipmunk.o rb_cpBB.o rb_cpBody.o rb_cpJoint.o rb_cpShape.o rb_cpSpace.o rb_cpVect.o
+LIBS = $(LIBRUBYARG_SHARED)  -lpthread -ldl -lcrypt -lm   -lc
+SRCS = rb_cpBody.c cpBB.c chipmunk.c rb_cpJoint.c cpCollision.c cpSpaceHash.c cpArray.c rb_cpShape.c rb_cpBB.c rb_cpSpace.c cpJoint.c rb_chipmunk.c cpSpace.c cpBody.c cpPolyShape.c cpVect.c rb_cpVect.c cpShape.c cpHashSet.c cpArbiter.c
+OBJS = rb_cpBody.o cpBB.o chipmunk.o rb_cpJoint.o cpCollision.o cpSpaceHash.o cpArray.o rb_cpShape.o rb_cpBB.o rb_cpSpace.o cpJoint.o rb_chipmunk.o cpSpace.o cpBody.o cpPolyShape.o cpVect.o rb_cpVect.o cpShape.o cpHashSet.o cpArbiter.o
 TARGET = chipmunk
-DLLIB = $(TARGET).bundle
+DLLIB = $(TARGET).so
 EXTSTATIC = 
 STATIC_LIB = 
 
+BINDIR        = $(bindir)
 RUBYCOMMONDIR = $(sitedir)$(target_prefix)
 RUBYLIBDIR    = $(sitelibdir)$(target_prefix)
 RUBYARCHDIR   = $(sitearchdir)$(target_prefix)
 
 TARGET_SO     = $(DLLIB)
-CLEANLIBS     = $(TARGET).bundle $(TARGET).il? $(TARGET).tds $(TARGET).map
+CLEANLIBS     = $(TARGET).so $(TARGET).il? $(TARGET).tds $(TARGET).map
 CLEANOBJS     = *.o *.a *.s[ol] *.pdb *.exp *.bak
 
 all:		$(DLLIB)

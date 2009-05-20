@@ -1,4 +1,4 @@
-require 'server/init'
+require 'init'
 require 'sinatra'
 
 set :reload, false

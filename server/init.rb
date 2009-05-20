@@ -1,11 +1,11 @@
 require 'rubygems'
-require 'server/models/player'
-require 'server/models/game_object'
-require 'server/models/ship'
-require 'server/models/missile'
+require 'models/player'
+require 'models/game_object'
+require 'models/ship'
+require 'models/missile'
 require 'json'
-require 'server/moneta/lib/moneta'
-require 'server/moneta/lib/moneta/memcache'
+require 'moneta/lib/moneta'
+require 'moneta/lib/moneta/memcache'
 
 module Math
   def self.offset_x(angle, distance)
