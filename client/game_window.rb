@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'gosu'
+require 'models/space_brawl_server'
 require 'models/player'
 require 'models/game_object'
 require 'open-uri'
@@ -35,8 +36,7 @@ class GameWindow < Gosu::Window
       @player.fire_missile
     end
     
-    
-    data = get("universe")
+    data = SpaceBrawlServer.universe
 
     objects = data["objects"].collect { |data| GameObject.new(data) }
     
@@ -70,9 +70,9 @@ class GameWindow < Gosu::Window
   end
 end
 
-def get(path)
-  JSON.load(open("http://209.20.91.156/#{path}"))
-end
-
-window = GameWindow.new
-window.show
+#def get(path)
+#  start = Time.now
+#  result = JSON.load(open("http://209.20.91.156/#{path}"))
+#  puts "Took " + (start - Time.now).to_s + " seconds"
+#  result
+#end
