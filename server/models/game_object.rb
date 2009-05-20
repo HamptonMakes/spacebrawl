@@ -4,6 +4,7 @@ class GameObject
   attr :parent_id, true
   attr :shape, true
   attr :pending_action, true
+  attr :id
 
   def initialize(parent_id = nil)
     @health = 0

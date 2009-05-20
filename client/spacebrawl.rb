@@ -71,7 +71,7 @@ class GameWindow < Gosu::Window
 end
 
 def get(path)
-  JSON.load(open("http://localhost:4567/#{path}"))
+  JSON.load(open("http://209.20.91.156/#{path}"))
 end
 
 window = GameWindow.new
