@@ -1,5 +1,5 @@
 require 'init'
-require 'Chipmunk-4.1.0/ruby/chipmunk'
+require 'chipmunk'
 require 'models/game_space'
 gs = GameSpace.new
 
