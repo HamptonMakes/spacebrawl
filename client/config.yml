@@ -1,0 +1,7 @@
+--- 
+:user: client
+:pass: client
+:identity: 59d8021688887cd91f6e262b4d1ee361
+:vhost: /game
+:host: spacebrawl.hamptoncatlin.com
+:log_level: debug

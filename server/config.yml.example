@@ -1,5 +1,5 @@
----
-:host: spacebrawl.hamptoncatlin.com
+
+:host: localhost
 :user: nanite
 :pass: testing
 :vhost: /nanite

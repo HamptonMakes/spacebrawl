@@ -40,11 +40,10 @@ class GameSpace
   end
   
   def load_new_ships
-    Player.all(:conditions => {:ship_id => nil}).each do |player|
-      ship = Ship.new(player.id)
-      add_game_object ship
-      player.ship_id = ship.id
-      player.save
+    $players.keys.each do |player_id|
+      if !(@objects.detect { |o| o.parent_id == player_id })
+        add_game_object(Ship.new(player_id))
+      end
     end
   end
   
@@ -72,12 +71,14 @@ class GameSpace
     @space.step(@dt)
   
     @objects.each do |object|
-      result = object.perform_actions
-      if result.is_a? GameObject
-        add_game_object result
-      elsif result == false
-        puts "REMOVING"
-        remove_game_object(object)
+      results = object.perform_actions
+      results.each do |result|
+        if result.is_a? GameObject
+          add_game_object result
+        elsif result == false
+          puts "REMOVING"
+          remove_game_object(object)
+        end
       end
     end
     
