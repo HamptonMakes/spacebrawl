@@ -16,9 +16,9 @@ class Missile < GameObject
   
   def perform_actions
     if @kill_at < Time.now
-      false
+      [false]
     else
-      true
+      [true]
     end
   end
 

@@ -13,19 +13,26 @@ class Ship < GameObject
   end
   
   def self.mass
-    500.0
+    100.0
   end
   
   def self.inertia
-    500.0
+    60.0
   end
   
+  # TODO: perform actions as actor
   def perform_actions
-    command = $cache.delete("player_#{@parent_id}")
-    if command
-      puts command + " #{@parent_id}"
-      self.send(command)
+    new_objects = []
+    while(command = $players[@parent_id][:actions].pop)
+      if command
+        puts command + " #{@parent_id}"
+        new_object = self.send(command)
+        if new_object
+          new_objects << new_object
+        end
+      end
     end
+    new_objects
   end
   
   def warp(vect)
@@ -58,7 +65,7 @@ class Ship < GameObject
   # forward momentum by creating a vector in the direction of the facing
   # and with a magnitude representing the force we want to apply
   def accelerate
-    @shape.body.apply_force((@shape.body.a.radians_to_vec2 * (5000.0)), CP::Vec2.new(0.0, 0.0))
+    @shape.body.apply_force((@shape.body.a.radians_to_vec2 * (20000.0)), CP::Vec2.new(0.0, 0.0))
   end
   
   def fire_missile

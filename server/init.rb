@@ -14,5 +14,3 @@ module Math
     Math.sin(angle) * distance
   end
 end
-
-$cache = Moneta::Memcache.new(:server => "localhost")

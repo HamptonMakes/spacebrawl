@@ -1,10 +1,7 @@
 require 'rubygems'
 require 'gosu'
-require 'models/space_brawl_server'
 require 'models/player'
 require 'models/game_object'
-require 'open-uri'
-require 'json'
 
 class GameWindow < Gosu::Window
   def self.window_size
@@ -15,7 +12,6 @@ class GameWindow < Gosu::Window
     width, height = GameWindow.window_size
     super(width, height, false, 25)
     self.caption = "Space Brawl!"
-    @player = Player.create
 
     GameObject.load_assets(self)
 
@@ -24,39 +20,39 @@ class GameWindow < Gosu::Window
 
   def update
     if button_down? Gosu::Button::KbLeft or button_down? Gosu::Button::GpLeft then
-      @player.turn_left
+      ServerClient.action "turn_left"
     end
     if button_down? Gosu::Button::KbRight or button_down? Gosu::Button::GpRight then
-      @player.turn_right
+      ServerClient.action "turn_right"
     end
     if button_down? Gosu::Button::KbUp or button_down? Gosu::Button::GpButton0 then
-      @player.accelerate
+      ServerClient.action "accelerate"
     end
     if button_down? Gosu::Button::KbSpace 
-      @player.fire_missile
+      ServerClient.action "fire_missile"
     end
     
-    data = SpaceBrawlServer.universe
-
-    objects = data["objects"].collect { |data| GameObject.new(data) }
+    if $game_objects.any?
+      objects = $game_objects.values.collect { |data| GameObject.new(data) }
     
-    my_ship = (objects.select do |object|
-      object.player_id.to_i == @player.id.to_i
-    end).first
+      my_ship = objects.detect do |object|
+        object.parent_id == $identity && object.image == "ship"
+      end
+      
+      offset_x, offset_y = 0, 0
     
-    my_ship.draw_health
-    
-    # only if my ship has shown up
-    if my_ship
-      offset_x, offset_y = my_ship.offsets
-    
+      # only if my ship has shown up
+      if my_ship
+        my_ship.draw_health
+        offset_x, offset_y = my_ship.offsets
+      end
+        
+      
       objects.each do |object|
         object.draw offset_x, offset_y
       end
       @background_image.draw(-1 * (offset_x / 5) - 300, -1 * (offset_y / 5) - 200, 0)
     end
-    
-    
   end
 
   def draw
@@ -65,14 +61,8 @@ class GameWindow < Gosu::Window
 
   def button_down(id)
     if id == Gosu::Button::KbEscape
+      EM.stop
       close
     end
   end
 end
-
-#def get(path)
-#  start = Time.now
-#  result = JSON.load(open("http://209.20.91.156/#{path}"))
-#  puts "Took " + (start - Time.now).to_s + " seconds"
-#  result
-#end
